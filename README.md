@@ -1,5 +1,5 @@
 # AndroidDragDropStaggeredGrid
-A staggered grid library with drag and drop capabilities for android.
+A two column staggered grid library with drag and drop capabilities for android.
 
 <img src="https://github.com/iatsu/AndroidDragDropStaggeredGrid/blob/master/DragDropStaggeredGrid.gif" width="450" />
 
