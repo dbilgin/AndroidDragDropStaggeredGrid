@@ -1,8 +1,10 @@
 # AndroidDragDropStaggeredGrid
 A staggered grid library with drag and drop capabilities for android.
 
-Add it in your root build.gradle at the end of repositories:
+<img src="https://github.com/iatsu/AndroidDragDropStaggeredGrid/blob/master/DragDropStaggeredGrid.gif" width="450" />
 
+Add it in your root build.gradle at the end of repositories:
+    
     allprojects {
       repositories {
         ...
