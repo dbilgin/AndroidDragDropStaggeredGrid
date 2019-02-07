@@ -15,7 +15,7 @@ Add it in your root build.gradle at the end of repositories:
 Add the dependency
 
     dependencies {
-      implementation 'com.github.iatsu:AndroidDragDropStaggeredGrid:0.1.1'
+      implementation 'com.github.iatsu:AndroidDragDropStaggeredGrid:0.1.2'
     }
 
 <h2>A simple guide</h2>
