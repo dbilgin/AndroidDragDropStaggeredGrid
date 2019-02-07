@@ -258,12 +258,11 @@ class DragDropStaggeredGrid(context: Context, attrs: AttributeSet? = null) : Rel
 
         fun calculateNewIndex(view: View, x: Float, y: Float, leftOrRightView: Int): Int {
             var layoutToBeUsed: LinearLayout
-            if (leftOrRightView == 0)
-                layoutToBeUsed = leftLayout
-            else
-                layoutToBeUsed = rightLayout
+            if (leftOrRightView == 0) layoutToBeUsed = leftLayout
+            else layoutToBeUsed = rightLayout
 
             var row = layoutToBeUsed.indexOfChild(view)
+            if(row == -1) row = layoutToBeUsed.childCount - 1
 
             for (i in 0 until layoutToBeUsed.childCount) {
                 val card = layoutToBeUsed.getChildAt(i)

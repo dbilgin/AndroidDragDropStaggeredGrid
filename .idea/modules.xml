@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/DragDropStaggeredGrid.iml" filepath="$PROJECT_DIR$/DragDropStaggeredGrid.iml" />
+      <module fileurl="file://$PROJECT_DIR$/AndroidDragDropStaggeredGrid.iml" filepath="$PROJECT_DIR$/AndroidDragDropStaggeredGrid.iml" />
       <module fileurl="file://$PROJECT_DIR$/DragDropStaggeredGridLibrary/DragDropStaggeredGridLibrary.iml" filepath="$PROJECT_DIR$/DragDropStaggeredGridLibrary/DragDropStaggeredGridLibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
