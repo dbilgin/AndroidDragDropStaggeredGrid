@@ -27,10 +27,10 @@ class Helper {
         class LongPressListener(val vi: View) : View.OnLongClickListener {
             override fun onLongClick(v: View?): Boolean {
 
-                val data: ClipData = ClipData.newPlainText("", "");
+                val data: ClipData = ClipData.newPlainText("", "")
                 val shadowBuilder: View.DragShadowBuilder = View.DragShadowBuilder(vi)
                 vi.startDrag(data, shadowBuilder, vi, 0)
-                vi.setVisibility(View.INVISIBLE)
+                vi.visibility = View.INVISIBLE
 
                 return true
             }

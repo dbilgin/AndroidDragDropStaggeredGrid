@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity(), Draggable {
         val textViewList = mutableListOf<View>()
         for (i in 0 until 10) {
             val textView = TextView(this)
+            textView.tag = i.toString()
             textView.setBackgroundColor(Color.BLACK)
             textView.setTextColor(Color.WHITE)
             textView.text = "Lorem ipsum " + i * 6847987465468486854
@@ -41,16 +42,19 @@ class MainActivity : AppCompatActivity(), Draggable {
         textView.setBackgroundColor(Color.BLACK)
         textView.setTextColor(Color.WHITE)
         textView.text = "Lorem ipsum"
-        dragDropStaggeredGrid.setViewByTag(textView, "oldViewsTag")
+        dragDropStaggeredGrid.setViewByTag(textView, "0")
         //endregion
+
+        val view = dragDropStaggeredGrid.getViewByTag("0")
     }
 
-    override fun dragging() {
-        Log.e("e", "dragging")
+    override fun dragging(localStateView: View, view: View?) {
+        Log.i("i", "dragging")
     }
 
-    override fun dragEnded() {
-        Log.e("e", "drag ended")
-        Log.e("View Changed Places", dragDropStaggeredGrid.hasChangedPlaces().toString())
+    override fun dragEnded(localStateView: View, view: View?) {
+        Log.i("i", "drag ended")
+        //Check if view changed places
+        Log.i("Changed Places", dragDropStaggeredGrid.hasChangedPlaces().toString())
     }
 }

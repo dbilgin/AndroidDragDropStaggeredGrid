@@ -61,7 +61,7 @@ class DragDropStaggeredGrid(context: Context, attrs: AttributeSet? = null) : Rel
 
     fun setViewByTag(newView: View, oldViewTag: String) {
         val view = getViewByTag(oldViewTag)
-        var index = 0
+        val index: Int
         if (view == null)
             return
 
@@ -81,9 +81,9 @@ class DragDropStaggeredGrid(context: Context, attrs: AttributeSet? = null) : Rel
 
     fun getViews(): MutableList<View> {
         //create sorted note array
-        var totalChildCount = leftLayout.childCount + rightLayout.childCount
+        val totalChildCount = leftLayout.childCount + rightLayout.childCount
         var currentCount = 0
-        var sortedViewArray = mutableListOf<View>()
+        val sortedViewArray = mutableListOf<View>()
 
         for (i in 0 until totalChildCount) {
             if (i % 2 == 0)
@@ -104,7 +104,7 @@ class DragDropStaggeredGrid(context: Context, attrs: AttributeSet? = null) : Rel
     fun getViewByTag(tag: String): View? {
         try {
             //create sorted note array
-            var totalChildCount = leftLayout.childCount + rightLayout.childCount
+            val totalChildCount = leftLayout.childCount + rightLayout.childCount
             var currentCount = 0
             var viewWithTag: View? = null
 
@@ -125,20 +125,12 @@ class DragDropStaggeredGrid(context: Context, attrs: AttributeSet? = null) : Rel
         }
     }
 
-    fun dragging() {
-        return
-    }
-
-    fun dragEnded() {
-        return
-    }
-
     private var hasChangedPlaces = false
 
     private inner class DragListener : View.OnDragListener {
 
         override fun onDrag(v: View?, event: DragEvent?): Boolean {
-            val view = event!!.getLocalState() as View
+            val view = event!!.localState as View
             var startingIndex: Int? = null
             if (view.parent != null)
                 startingIndex = (view.parent as LinearLayout).indexOfChild(view)
@@ -148,21 +140,21 @@ class DragDropStaggeredGrid(context: Context, attrs: AttributeSet? = null) : Rel
                     // do nothing if hovering above own position
                     if (view === v) return true
 
-                    callback?.dragging()
+                    callback?.dragging(view, v)
 
                     //<-- check layout switches
-                    var leftOrRightView: Int = 0
+                    val leftOrRightView: Int
                     if (v!!.x != 0f) {
                         leftOrRightView = 1
                         if (view.parent == leftLayout) {
-                            var beginningIndex = leftLayout.indexOfChild(view)
+                            val beginningIndex = leftLayout.indexOfChild(view)
 
                             leftLayout.removeView(view)
-                            val index = calculateNewIndex(view, event.getX(), event.getY(), leftOrRightView)
+                            val index = calculateNewIndex(view, event.x, event.y, leftOrRightView)
                             rightLayout.addView(view, index)
                             hasChangedPlaces = true
 
-                            var nextChildToMove = rightLayout.getChildAt(index + 1)
+                            val nextChildToMove = rightLayout.getChildAt(index + 1)
                             if (nextChildToMove != null) {
                                 rightLayout.removeView(nextChildToMove)
                                 leftLayout.addView(nextChildToMove, beginningIndex)
@@ -171,14 +163,14 @@ class DragDropStaggeredGrid(context: Context, attrs: AttributeSet? = null) : Rel
                     } else {
                         leftOrRightView = 0
                         if (view.parent == rightLayout) {
-                            var beginningIndex = rightLayout.indexOfChild(view)
+                            val beginningIndex = rightLayout.indexOfChild(view)
 
                             rightLayout.removeView(view)
-                            val index = calculateNewIndex(view, event.getX(), event.getY(), leftOrRightView)
+                            val index = calculateNewIndex(view, event.x, event.y, leftOrRightView)
                             leftLayout.addView(view, index)
                             hasChangedPlaces = true
 
-                            var nextChildToMove = leftLayout.getChildAt(index + 1)
+                            val nextChildToMove = leftLayout.getChildAt(index + 1)
                             if (nextChildToMove != null) {
                                 leftLayout.removeView(nextChildToMove)
                                 rightLayout.addView(nextChildToMove, beginningIndex)
@@ -187,28 +179,28 @@ class DragDropStaggeredGrid(context: Context, attrs: AttributeSet? = null) : Rel
                     }
                     //check layout switches -->
 
-                    var layoutToBeUsed: LinearLayout
+                    val layoutToBeUsed: LinearLayout
                     if (leftOrRightView == 0)
                         layoutToBeUsed = leftLayout
                     else
                         layoutToBeUsed = rightLayout
 
                     // get the new list index
-                    val index = calculateNewIndex(view, event.getX(), event.getY(), leftOrRightView)
+                    val index = calculateNewIndex(view, event.x, event.y, leftOrRightView)
                     if (startingIndex != index && startingIndex != null)
                         hasChangedPlaces = true
 
                     //for scroll
-                    var scrollY: Int = mainScroller.getScrollY();
-                    var rect: Rect = Rect();
-                    mainScroller.getHitRect(rect);
+                    val scrollY: Int = mainScroller.scrollY
+                    val rect = Rect()
+                    mainScroller.getHitRect(rect)
 
-                    if (event.getY() - scrollY > mainScroller.getBottom() - 250) {
-                        startScrolling(scrollY, layoutToBeUsed.getHeight());
-                    } else if (event.getY() - scrollY < mainScroller.getTop() + 250) {
-                        startScrolling(scrollY, 0);
+                    if (event.y - scrollY > mainScroller.bottom - 250) {
+                        startScrolling(scrollY, layoutToBeUsed.height)
+                    } else if (event.y - scrollY < mainScroller.top + 250) {
+                        startScrolling(scrollY, 0)
                     } else {
-                        stopScrolling();
+                        stopScrolling()
                     }
                     //for scroll
 
@@ -219,7 +211,7 @@ class DragDropStaggeredGrid(context: Context, attrs: AttributeSet? = null) : Rel
                 }
                 DragEvent.ACTION_DRAG_ENDED -> {
                     view.visibility = View.VISIBLE
-                    callback?.dragEnded()
+                    callback?.dragEnded(view, v)
                 }
             }
             return true
@@ -227,37 +219,37 @@ class DragDropStaggeredGrid(context: Context, attrs: AttributeSet? = null) : Rel
 
         fun startScrolling(from: Int, to: Int) {
             if (from != to && mAnimator == null) {
-                mIsScrolling.set(true);
-                mAnimator = ValueAnimator();
-                mAnimator!!.setInterpolator(OvershootInterpolator());
-                mAnimator!!.setDuration(Math.abs(to - from).toLong());
-                mAnimator!!.setIntValues(from, to);
+                mIsScrolling.set(true)
+                mAnimator = ValueAnimator()
+                mAnimator!!.setInterpolator(OvershootInterpolator())
+                mAnimator!!.setDuration(Math.abs(to - from).toLong())
+                mAnimator!!.setIntValues(from, to)
                 mAnimator!!.addUpdateListener(object : ValueAnimator.AnimatorUpdateListener {
 
                     override fun onAnimationUpdate(valueAnimator: ValueAnimator?) {
-                        mainScroller.smoothScrollTo(0, valueAnimator!!.getAnimatedValue() as Int);
+                        mainScroller.smoothScrollTo(0, valueAnimator!!.animatedValue as Int)
                     }
-                });
+                })
                 mAnimator!!.addListener(object : AnimatorListenerAdapter() {
 
                     override fun onAnimationEnd(animation: Animator?) {
-                        mIsScrolling.set(false);
-                        mAnimator = null;
+                        mIsScrolling.set(false)
+                        mAnimator = null
                     }
 
-                });
-                mAnimator!!.start();
+                })
+                mAnimator!!.start()
             }
         }
 
         fun stopScrolling() {
             if (mAnimator != null) {
-                mAnimator!!.cancel();
+                mAnimator!!.cancel()
             }
         }
 
         fun calculateNewIndex(view: View, x: Float, y: Float, leftOrRightView: Int): Int {
-            var layoutToBeUsed: LinearLayout
+            val layoutToBeUsed: LinearLayout
             if (leftOrRightView == 0) layoutToBeUsed = leftLayout
             else layoutToBeUsed = rightLayout
 
@@ -278,6 +270,6 @@ class DragDropStaggeredGrid(context: Context, attrs: AttributeSet? = null) : Rel
 }
 
 interface Draggable {
-    fun dragging()
-    fun dragEnded()
+    fun dragging(localStateView: View, view: View?)
+    fun dragEnded(localStateView: View, view: View?)
 }
