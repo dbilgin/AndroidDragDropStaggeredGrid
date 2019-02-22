@@ -82,11 +82,12 @@ Add the dependency
         //get the view you want from the list with the tag you give it
         val v: View = getViewByTag("tagString")
     }
-    override fun dragging() {
-        Log.e("e", "dragging")
+    override fun dragging(localStateView: View, view: View?) {
+        Log.i("i", "dragging")
     }
 
-    override fun dragEnded() {
-        Log.e("e", "drag ended")
-        Log.e("View Changed Places", dragDropStaggeredGrid.hasChangedPlaces().toString())
+    override fun dragEnded(localStateView: View, view: View?) {
+        Log.i("i", "drag ended")
+        //Check if view changed places
+        Log.i("Changed Places", dragDropStaggeredGrid.hasChangedPlaces().toString())
     }
