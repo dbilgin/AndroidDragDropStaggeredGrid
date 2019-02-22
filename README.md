@@ -59,6 +59,7 @@ Add the dependency
         val textViewList = mutableListOf<View>()
         for (i in 0 until 10) {
             val textView = TextView(this)
+            textView.tag = i.toString()
             textView.setBackgroundColor(Color.BLACK)
             textView.setTextColor(Color.WHITE)
             textView.text = "Lorem ipsum " + i * 6847987465468486854
@@ -76,11 +77,11 @@ Add the dependency
         textView.setBackgroundColor(Color.BLACK)
         textView.setTextColor(Color.WHITE)
         textView.text = "Lorem ipsum"
-        dragDropStaggeredGrid.setViewByTag(textView, "oldViewsTag")
+        dragDropStaggeredGrid.setViewByTag(textView, "0")
         //endregion
         
         //get the view you want from the list with the tag you give it
-        val v: View = getViewByTag("tagString")
+        val view = dragDropStaggeredGrid.getViewByTag("0")
     }
     
     override fun dragging(localStateView: View, view: View?) {
