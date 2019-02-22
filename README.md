@@ -82,6 +82,7 @@ Add the dependency
         //get the view you want from the list with the tag you give it
         val v: View = getViewByTag("tagString")
     }
+    
     override fun dragging(localStateView: View, view: View?) {
         Log.i("i", "dragging")
     }
